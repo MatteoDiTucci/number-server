@@ -24,7 +24,7 @@ public class NumberRepository {
         });
     }
 
-    public int uniqueTotal() {
+    public int uniquesTotal() {
         return uniques.size();
     }
 

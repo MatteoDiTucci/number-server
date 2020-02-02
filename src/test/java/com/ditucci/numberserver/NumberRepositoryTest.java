@@ -68,7 +68,7 @@ class NumberRepositoryTest {
         uniques.add("123456789");
         uniques.add("098765432");
 
-        assertEquals(2, repository.uniqueTotal());
+        assertEquals(2, repository.uniquesTotal());
     }
 
     @Test
