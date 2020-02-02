@@ -32,12 +32,15 @@ public class LogNumbersTest {
     }
 
     @Test
-    void logsNumberInFile() {
-        String number = "123456789";
+    void logsNumbersInFile() {
+        String firstNumber = "123456789";
+        String secondNumber = "098765432";
+        String thirdNumber = "102938475";
+        String expectedLogContent = String.join("\n", firstNumber, secondNumber, thirdNumber).concat("\n");
 
-        client.logNumbers(number);
+        client.logNumbers(String.join("\n", firstNumber, secondNumber, thirdNumber));
 
-        assertEquals(number + "\n", contentFromLogFile());
+        assertEquals(expectedLogContent, contentFromLogFile());
     }
 
     @Test

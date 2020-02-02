@@ -32,7 +32,7 @@ class LogNumbersControllerTest {
     }
 
     @Test
-    void logsNumber() {
+    void logsSingleNumber() {
         String number = "123456789";
 
         controller.logNumbers(number);
@@ -48,5 +48,19 @@ class LogNumbersControllerTest {
         controller.logNumbers(number);
 
         verifyZeroInteractions(logger);
+    }
+
+    @Test
+    void logsMultipleNumbers() {
+        String firstNumber = "123456789";
+        String secondNumber = "098765431";
+        String thirdNumber = "019283746";
+        String numbers = String.join("\n", firstNumber, secondNumber, thirdNumber);
+
+        controller.logNumbers(numbers);
+
+        verify(logger).log(firstNumber);
+        verify(logger).log(secondNumber);
+        verify(logger).log(thirdNumber);
     }
 }

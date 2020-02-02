@@ -6,6 +6,7 @@ import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Post;
 
+import java.util.Arrays;
 import java.util.HashSet;
 
 @Controller
@@ -20,13 +21,18 @@ public class LogNumbersController {
     }
 
     @Post(value = "/numbers", consumes = MediaType.TEXT_PLAIN)
-    public HttpResponse<Void> logNumbers(@Body String numbers) {
+    public HttpResponse<Void> logNumbers(@Body String numberLines) {
+        String[] numbers = numberLines.split("\n");
 
-        if (! duplicates.contains(numbers)) {
-            duplicates.add(numbers);
-            logger.log(numbers);
-        }
+        Arrays.stream(numbers).forEach(this::logDeduplicatedNumber);
 
         return HttpResponse.ok();
+    }
+
+    private void logDeduplicatedNumber(String number) {
+        if (!duplicates.contains(number)) {
+            duplicates.add(number);
+            logger.log(number);
+        }
     }
 }
