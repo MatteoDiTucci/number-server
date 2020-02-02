@@ -12,6 +12,6 @@ public class BeanFactory {
     @Singleton
     public NumberRepository buildNumberRepository() {
         NumberLogger logger = new NumberLogger(LoggerFactory.getLogger(NumberRepository.class));
-        return new NumberRepository(new HashSet<>(), logger);
+        return new NumberRepository(0, new HashSet<>(), logger);
     }
 }

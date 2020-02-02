@@ -4,26 +4,36 @@ import java.util.HashSet;
 import java.util.List;
 
 public class NumberRepository {
-    private HashSet<String> duplicates;
+    private int duplicatesTotal;
+    private HashSet<String> uniques;
     private NumberLogger logger;
 
-    public NumberRepository(HashSet<String> duplicates, NumberLogger logger) {
-        this.duplicates = duplicates;
+    public NumberRepository(int duplicatesTotal, HashSet<String> uniques, NumberLogger logger) {
+        this.duplicatesTotal = duplicatesTotal;
+        this.uniques = uniques;
         this.logger = logger;
     }
 
     public void save(List<String> numbers) {
-        numbers.stream()
-                .filter(number -> !duplicates.contains(number))
-                .forEach(this::persistAndLogNumber);
+        numbers.forEach(number -> {
+            if (uniques.contains(number)) {
+                duplicatesTotal = duplicatesTotal + 1;
+            } else {
+                persistAndLogNumber(number);
+            }
+        });
     }
 
     public int uniqueTotal() {
-        return duplicates.size();
+        return uniques.size();
     }
 
     private void persistAndLogNumber(String number) {
-        this.duplicates.add(number);
+        this.uniques.add(number);
         logger.log(number);
+    }
+
+    public int duplicatesTotal() {
+        return duplicatesTotal;
     }
 }

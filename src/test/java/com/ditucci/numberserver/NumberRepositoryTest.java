@@ -12,15 +12,15 @@ import static org.mockito.Mockito.*;
 
 class NumberRepositoryTest {
 
-    private HashSet<String> duplicates;
+    private HashSet<String> uniques;
     private NumberLogger logger;
     private NumberRepository repository;
 
     @BeforeEach
     void setUp() {
-        duplicates = new HashSet<>();
+        uniques = new HashSet<>();
         logger = mock(NumberLogger.class);
-        repository = new NumberRepository(duplicates, logger);
+        repository = new NumberRepository(0, uniques, logger);
     }
 
     @Test
@@ -29,7 +29,7 @@ class NumberRepositoryTest {
 
         repository.save(List.of(number));
 
-        assertTrue(duplicates.contains(number));
+        assertTrue(uniques.contains(number));
     }
 
     @Test
@@ -43,7 +43,7 @@ class NumberRepositoryTest {
 
     @Test
     void doesNotLogDuplicates() {
-        duplicates.add("123456789");
+        uniques.add("123456789");
 
         repository.save(List.of("123456789"));
 
@@ -65,9 +65,26 @@ class NumberRepositoryTest {
 
     @Test
     void returnsUniqueTotal() {
-        duplicates.add("123456789");
-        duplicates.add("098765432");
+        uniques.add("123456789");
+        uniques.add("098765432");
 
         assertEquals(2, repository.uniqueTotal());
+    }
+
+    @Test
+    void returnsDuplicateTotal() {
+        String number = "123456789";
+        repository.save(List.of(number, number));
+
+        assertEquals(1, repository.duplicatesTotal());
+    }
+
+    @Test
+    void returnsDuplicateTotalAcrossMultipleExecutions() {
+        String number = "123456789";
+        repository.save(List.of(number, number));
+        repository.save(List.of(number, number));
+
+        assertEquals(3, repository.duplicatesTotal());
     }
 }
