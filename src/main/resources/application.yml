@@ -1,0 +1,5 @@
+micronaut:
+  application:
+    name: numberserver
+  server:
+    port: 4040
