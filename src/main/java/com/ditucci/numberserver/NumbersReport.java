@@ -14,14 +14,16 @@ public class NumbersReport {
     }
 
     public void display() {
-        int newUniques = repository.uniquesTotal() - lastExecutionUniques;
-        int newDuplicates = repository.duplicatesTotal() - lastExecutionDuplicates;
-        int total = repository.uniquesTotal();
+        int currentUniques = repository.uniquesTotal();
+        int currentDuplicates = repository.duplicatesTotal();
 
-        lastExecutionUniques = newUniques;
-        lastExecutionDuplicates = newDuplicates;
+        int newUniques = currentUniques - lastExecutionUniques;
+        int newDuplicates = currentDuplicates - lastExecutionDuplicates;
 
-        logger.log(message(newUniques, newDuplicates, total));
+        lastExecutionUniques = currentUniques;
+        lastExecutionDuplicates = currentDuplicates;
+
+        logger.log(message(newUniques, newDuplicates, currentUniques));
     }
 
     private String message(int newUniques, int newDuplicates, int total) {

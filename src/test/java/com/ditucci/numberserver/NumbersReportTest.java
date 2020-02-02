@@ -63,6 +63,7 @@ class NumbersReportTest {
         report.display();
         report.display();
 
+        verify(logger).log("Received 10 unique numbers, 10 duplicates. Unique total: 10");
         verify(logger).log("Received 0 unique numbers, 0 duplicates. Unique total: 10");
     }
 }
