@@ -18,6 +18,10 @@ public class NumberRepository {
                 .forEach(this::persistAndLogNumber);
     }
 
+    public int uniqueTotal() {
+        return duplicates.size();
+    }
+
     private void persistAndLogNumber(String number) {
         this.duplicates.add(number);
         logger.log(number);

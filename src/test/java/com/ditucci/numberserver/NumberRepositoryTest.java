@@ -6,20 +6,21 @@ import org.junit.jupiter.api.Test;
 import java.util.HashSet;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 class NumberRepositoryTest {
 
-    private HashSet<String> numbers;
+    private HashSet<String> duplicates;
     private NumberLogger logger;
     private NumberRepository repository;
 
     @BeforeEach
     void setUp() {
-        numbers = new HashSet<>();
+        duplicates = new HashSet<>();
         logger = mock(NumberLogger.class);
-        repository = new NumberRepository(numbers, logger);
+        repository = new NumberRepository(duplicates, logger);
     }
 
     @Test
@@ -28,7 +29,7 @@ class NumberRepositoryTest {
 
         repository.save(List.of(number));
 
-        assertTrue(numbers.contains(number));
+        assertTrue(duplicates.contains(number));
     }
 
     @Test
@@ -42,7 +43,7 @@ class NumberRepositoryTest {
 
     @Test
     void doesNotLogDuplicates() {
-        numbers.add("123456789");
+        duplicates.add("123456789");
 
         repository.save(List.of("123456789"));
 
@@ -60,5 +61,13 @@ class NumberRepositoryTest {
         verify(logger).log(firstNumber);
         verify(logger).log(secondNumber);
         verify(logger).log(thirdNumber);
+    }
+
+    @Test
+    void returnsUniqueTotal() {
+        duplicates.add("123456789");
+        duplicates.add("098765432");
+
+        assertEquals(2, repository.uniqueTotal());
     }
 }
