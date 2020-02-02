@@ -1,6 +1,7 @@
 package com.ditucci.numberserver.acceptance;
 
 import io.micronaut.context.ApplicationContext;
+import io.micronaut.http.client.exceptions.ReadTimeoutException;
 import io.micronaut.runtime.server.EmbeddedServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class LogNumbersToFileTest {
     private static final String LOG_FILE_PATH = "src/test/resources/numbers.log";
@@ -53,6 +55,12 @@ public class LogNumbersToFileTest {
         client.logNumbers(duplicatedNumber.concat("\n"));
 
         assertEquals(duplicatedNumber + "\n" + number + "\n", contentFromLogFile());
+    }
+
+    @Test
+    void shutsDownOnTerminationCommand(){
+        assertThrows(ReadTimeoutException.class,
+                () -> client.logNumbers("terminate\n"));
     }
 
     private String contentFromLogFile() {
