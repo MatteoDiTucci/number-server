@@ -1,10 +1,8 @@
 package com.ditucci.numberserver;
 
-import javax.inject.Singleton;
 import java.util.HashSet;
 import java.util.List;
 
-@Singleton
 public class NumberRepository {
     private HashSet<String> duplicates;
     private NumberLogger logger;
