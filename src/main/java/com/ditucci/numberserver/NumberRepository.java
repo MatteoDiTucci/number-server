@@ -1,7 +1,9 @@
 package com.ditucci.numberserver;
 
+import javax.inject.Singleton;
 import java.util.HashSet;
 
+@Singleton
 public class NumberRepository {
     private HashSet<String> numbers;
     private NumberLogger logger;

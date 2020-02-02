@@ -4,7 +4,6 @@ import io.micronaut.http.HttpResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashSet;
 
 import static io.micronaut.http.HttpStatus.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,16 +11,14 @@ import static org.mockito.Mockito.*;
 
 class NumberControllerTest {
 
-    private HashSet<String> duplicates;
-    private NumberLogger logger;
+    private NumberRepository repository;
     private NumberController controller;
 
 
     @BeforeEach
     void setUp() {
-        duplicates = new HashSet<>();
-        logger = mock(NumberLogger.class);
-        controller = new NumberController(duplicates, logger);
+        repository = mock(NumberRepository.class);
+        controller = new NumberController(repository);
     }
 
     @Test
@@ -32,26 +29,16 @@ class NumberControllerTest {
     }
 
     @Test
-    void logsSingleNumber() {
+    void persistsSingleNumber() {
         String number = "123456789";
 
         controller.logNumbers(number.concat("\n"));
 
-        verify(logger).log(number);
+        verify(repository).save(number);
     }
 
     @Test
-    void doesNotLogDuplicates() {
-        String number = "123456789";
-        duplicates.add(number);
-
-        controller.logNumbers(number);
-
-        verifyZeroInteractions(logger);
-    }
-
-    @Test
-    void logsMultipleNumbers() {
+    void persistsMultipleNumbers() {
         String firstNumber = "123456789";
         String secondNumber = "098765431";
         String thirdNumber = "019283746";
@@ -59,9 +46,9 @@ class NumberControllerTest {
 
         controller.logNumbers(numbers);
 
-        verify(logger).log(firstNumber);
-        verify(logger).log(secondNumber);
-        verify(logger).log(thirdNumber);
+        verify(repository).save(firstNumber);
+        verify(repository).save(secondNumber);
+        verify(repository).save(thirdNumber);
     }
 
     @Test
