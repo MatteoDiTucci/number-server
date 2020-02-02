@@ -3,3 +3,5 @@ micronaut:
     name: numberserver
   server:
     port: 4040
+scheduled:
+  fixed-rate: 10s

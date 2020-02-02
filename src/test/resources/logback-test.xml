@@ -21,7 +21,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.ditucci.numberserver" level="INFO">
+    <logger name="com.ditucci.numberserver.NumberRepository" level="INFO">
         <appender-ref ref="FILE" />
     </logger>
 </configuration>

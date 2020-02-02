@@ -14,4 +14,10 @@ public class BeanFactory {
         NumberLogger logger = new NumberLogger(LoggerFactory.getLogger(NumberRepository.class));
         return new NumberRepository(0, new HashSet<>(), logger);
     }
+
+    @Singleton
+    public NumbersReport buildNumbersReport(NumberRepository repository) {
+        NumberLogger logger = new NumberLogger(LoggerFactory.getLogger(NumbersReport.class));
+        return new NumbersReport(0, 0, repository, logger);
+    }
 }

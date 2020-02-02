@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class LogNumbersTest {
+public class LogNumbersToFileTest {
     private static final String LOG_FILE_PATH = "src/test/resources/numbers.log";
 
     private EmbeddedServer server;
