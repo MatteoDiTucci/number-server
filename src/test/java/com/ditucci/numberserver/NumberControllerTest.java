@@ -4,10 +4,13 @@ import io.micronaut.http.HttpResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 
-import static io.micronaut.http.HttpStatus.*;
+import static io.micronaut.http.HttpStatus.BAD_REQUEST;
+import static io.micronaut.http.HttpStatus.OK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 class NumberControllerTest {
 
@@ -34,7 +37,7 @@ class NumberControllerTest {
 
         controller.logNumbers(number.concat("\n"));
 
-        verify(repository).save(number);
+        verify(repository).save(List.of(number));
     }
 
     @Test
@@ -46,9 +49,7 @@ class NumberControllerTest {
 
         controller.logNumbers(numbers);
 
-        verify(repository).save(firstNumber);
-        verify(repository).save(secondNumber);
-        verify(repository).save(thirdNumber);
+        verify(repository).save(List.of(firstNumber, secondNumber, thirdNumber));
     }
 
     @Test

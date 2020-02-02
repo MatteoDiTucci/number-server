@@ -2,9 +2,9 @@ package com.ditucci.numberserver;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.HashSet;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
@@ -26,7 +26,7 @@ class NumberRepositoryTest {
     void savesNumbers() {
         String number = "123456789";
 
-        repository.save(number);
+        repository.save(List.of(number));
 
         assertTrue(numbers.contains(number));
     }
@@ -35,7 +35,7 @@ class NumberRepositoryTest {
     void logsSingleNumber() {
         String number = "123456789";
 
-        repository.save(number);
+        repository.save(List.of(number));
 
         verify(logger).log(number);
     }
@@ -44,7 +44,7 @@ class NumberRepositoryTest {
     void doesNotLogDuplicates() {
         numbers.add("123456789");
 
-        repository.save("123456789");
+        repository.save(List.of("123456789"));
 
         verifyZeroInteractions(logger);
     }
@@ -55,9 +55,7 @@ class NumberRepositoryTest {
         String secondNumber = "098765431";
         String thirdNumber = "019283746";
 
-        repository.save(firstNumber);
-        repository.save(secondNumber);
-        repository.save(thirdNumber);
+        repository.save(List.of(firstNumber, secondNumber, thirdNumber));
 
         verify(logger).log(firstNumber);
         verify(logger).log(secondNumber);

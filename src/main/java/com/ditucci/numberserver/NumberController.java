@@ -27,7 +27,7 @@ public class NumberController {
         }
 
         String[] numbers = numberLines.split("\n");
-        Arrays.stream(numbers).forEach(number -> repository.save(number));
+        repository.save(Arrays.asList(numbers));
 
         return HttpResponse.ok();
     }
