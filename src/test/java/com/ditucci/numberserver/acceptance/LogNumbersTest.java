@@ -38,7 +38,7 @@ public class LogNumbersTest {
         String thirdNumber = "102938475";
         String expectedLogContent = String.join("\n", firstNumber, secondNumber, thirdNumber).concat("\n");
 
-        client.logNumbers(String.join("\n", firstNumber, secondNumber, thirdNumber));
+        client.logNumbers(numberLinesFrom(firstNumber, secondNumber, thirdNumber));
 
         assertEquals(expectedLogContent, contentFromLogFile());
     }
@@ -48,9 +48,9 @@ public class LogNumbersTest {
         String duplicatedNumber = "123456789";
         String number = "098765432";
 
-        client.logNumbers(duplicatedNumber);
-        client.logNumbers(number);
-        client.logNumbers(duplicatedNumber);
+        client.logNumbers(duplicatedNumber.concat("\n"));
+        client.logNumbers(number.concat("\n"));
+        client.logNumbers(duplicatedNumber.concat("\n"));
 
         assertEquals(duplicatedNumber + "\n" + number + "\n", contentFromLogFile());
     }
@@ -71,5 +71,9 @@ public class LogNumbersTest {
         } catch (IOException e) {
             // do nothing
         }
+    }
+
+    private String numberLinesFrom(String... numbers) {
+        return String.join("\n", numbers).concat("\n");
     }
 }
