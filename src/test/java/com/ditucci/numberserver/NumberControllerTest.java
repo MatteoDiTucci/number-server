@@ -1,7 +1,6 @@
 package com.ditucci.numberserver;
 
 import io.micronaut.http.HttpResponse;
-import io.micronaut.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,18 +10,18 @@ import static io.micronaut.http.HttpStatus.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-class LogNumbersControllerTest {
+class NumberControllerTest {
 
     private HashSet<String> duplicates;
     private NumberLogger logger;
-    private LogNumbersController controller;
+    private NumberController controller;
 
 
     @BeforeEach
     void setUp() {
         duplicates = new HashSet<>();
         logger = mock(NumberLogger.class);
-        controller = new LogNumbersController(duplicates, logger);
+        controller = new NumberController(duplicates, logger);
     }
 
     @Test

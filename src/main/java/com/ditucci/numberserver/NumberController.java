@@ -12,12 +12,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Controller
-public class LogNumbersController {
+public class NumberController {
 
     private HashSet<String> duplicates;
     private NumberLogger logger;
 
-    public LogNumbersController(HashSet<String> duplicates, NumberLogger logger) {
+    public NumberController(HashSet<String> duplicates, NumberLogger logger) {
         this.duplicates = duplicates;
         this.logger = logger;
     }
