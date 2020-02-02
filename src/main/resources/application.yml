@@ -3,5 +3,11 @@ micronaut:
     name: numberserver
   server:
     port: 4040
+  executors:
+    io:
+      type:
+        fixed
+      nThreads:
+        5
 scheduled:
   fixed-rate: 10s
