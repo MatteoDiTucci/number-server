@@ -14,7 +14,7 @@
     </root>
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>logs/numbers.log</file>
+        <file>src/test/resources/numbers.log</file>
         <append>true</append>
         <encoder>
             <pattern>%msg%n</pattern>

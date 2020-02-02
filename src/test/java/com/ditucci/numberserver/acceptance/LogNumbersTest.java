@@ -15,6 +15,8 @@ import java.nio.file.Paths;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LogNumbersTest {
+    private static final String LOG_FILE_PATH = "src/test/resources/numbers.log";
+
     private EmbeddedServer server;
     private LogNumbersClient client;
 
@@ -27,24 +29,33 @@ public class LogNumbersTest {
     @AfterEach
     void tearDown() {
         server.stop();
+        wipeLogFile();
     }
 
     @Test
-    @Disabled
     void logsNumberInFile() {
         String number = "123456789";
 
         client.logNumbers(number);
 
-        assertEquals(number, contentFromLogFile());
+        assertEquals(number + "\n", contentFromLogFile());
     }
 
     private String contentFromLogFile() {
-        Path filePath = Paths.get("src/test/resources/numbers.log");
+        Path filePath = Paths.get(LOG_FILE_PATH);
         try {
             return Files.readString(filePath);
         } catch (IOException e) {
             return "Exception raised while trying to read the log file";
+        }
+    }
+
+    private void wipeLogFile() {
+        Path filePath = Paths.get(LOG_FILE_PATH);
+        try {
+            Files.writeString(filePath, "");
+        } catch (IOException e) {
+            // do nothing
         }
     }
 }
