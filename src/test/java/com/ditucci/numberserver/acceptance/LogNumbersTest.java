@@ -4,7 +4,6 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.runtime.server.EmbeddedServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -39,6 +38,18 @@ public class LogNumbersTest {
         client.logNumbers(number);
 
         assertEquals(number + "\n", contentFromLogFile());
+    }
+
+    @Test
+    void logsDeduplicatedNumbers() {
+        String duplicatedNumber = "123456789";
+        String number = "098765432";
+
+        client.logNumbers(duplicatedNumber);
+        client.logNumbers(number);
+        client.logNumbers(duplicatedNumber);
+
+        assertEquals(duplicatedNumber + "\n" + number + "\n", contentFromLogFile());
     }
 
     private String contentFromLogFile() {

@@ -4,21 +4,24 @@ import io.micronaut.http.HttpResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
+
 import static io.micronaut.http.HttpStatus.OK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 class LogNumbersControllerTest {
 
+    private HashSet<String> duplicates;
     private NumberLogger logger;
     private LogNumbersController controller;
 
 
     @BeforeEach
     void setUp() {
+        duplicates = new HashSet<>();
         logger = mock(NumberLogger.class);
-        controller = new LogNumbersController(logger);
+        controller = new LogNumbersController(duplicates, logger);
     }
 
     @Test
@@ -35,5 +38,15 @@ class LogNumbersControllerTest {
         controller.logNumbers(number);
 
         verify(logger).log(number);
+    }
+
+    @Test
+    void doesNotLogDuplicates() {
+        String number = "123456789";
+        duplicates.add(number);
+
+        controller.logNumbers(number);
+
+        verifyZeroInteractions(logger);
     }
 }
