@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -20,7 +21,7 @@ class NumberRepositoryTest {
     void setUp() {
         uniques = new HashSet<>();
         logger = mock(NumberLogger.class);
-        repository = new NumberRepository(0, uniques, logger);
+        repository = new NumberRepository(new AtomicInteger(), uniques, logger);
     }
 
     @Test
