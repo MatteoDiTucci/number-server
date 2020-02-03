@@ -59,9 +59,7 @@ class NumberRepositoryTest {
 
         repository.save(List.of(firstNumber, secondNumber, thirdNumber));
 
-        verify(logger).log(firstNumber);
-        verify(logger).log(secondNumber);
-        verify(logger).log(thirdNumber);
+        verify(logger).log(String.join("\n", firstNumber, secondNumber, thirdNumber));
     }
 
     @Test

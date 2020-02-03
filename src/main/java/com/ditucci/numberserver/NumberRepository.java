@@ -16,15 +16,21 @@ public class NumberRepository {
     }
 
     public void save(List<String> numbers) {
+        StringBuilder stringBuilder = new StringBuilder();
+
         numbers.forEach(number -> {
             boolean isUnique = uniques.add(number);
 
             if (isUnique) {
-                logger.log(number);
+                addNumberToStringBuilder(stringBuilder, number);
             } else {
                 duplicatesTotal.incrementAndGet();
             }
         });
+
+        if (stringBuilder.length() > 0) {
+            logger.log(stringBuilder.toString());
+        }
     }
 
     public int uniquesTotal() {
@@ -33,5 +39,12 @@ public class NumberRepository {
 
     public int duplicatesTotal() {
         return duplicatesTotal.get();
+    }
+
+    private void addNumberToStringBuilder(StringBuilder stringBuilder, String number) {
+        if (stringBuilder.length() > 0) {
+            stringBuilder.append("\n");
+        }
+        stringBuilder.append(number);
     }
 }
