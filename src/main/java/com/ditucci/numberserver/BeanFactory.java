@@ -4,7 +4,7 @@ import io.micronaut.context.annotation.Factory;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Singleton;
-import java.util.HashSet;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Factory
@@ -13,7 +13,7 @@ public class BeanFactory {
     @Singleton
     public NumberRepository buildNumberRepository() {
         NumberLogger logger = new NumberLogger(LoggerFactory.getLogger(NumberRepository.class));
-        return new NumberRepository(new AtomicInteger(), new HashSet<>(), logger);
+        return new NumberRepository(new AtomicInteger(), ConcurrentHashMap.newKeySet(), logger);
     }
 
     @Singleton
