@@ -36,7 +36,6 @@ public class NumberController {
             queue.add(POISON_PILL);
             numberQueueConsumers.shutdownGracefully();
             appContext.stop();
-            System.exit(0);
         }
 
         if (isNotValidNumbers(numberLines)) {
