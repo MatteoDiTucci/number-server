@@ -17,7 +17,7 @@ public class QueueConsumers {
     public QueueConsumers(Queue queue, Repository repository) {
         this.queue = queue;
         this.repository = repository;
-        this.executorService = Executors.newFixedThreadPool(10);
+        this.executorService = Executors.newFixedThreadPool(10); // 10 is an arbitrary number
 
         startConsumingQueue();
     }
@@ -44,7 +44,7 @@ public class QueueConsumers {
     public void shutdownGracefully() {
         executorService.shutdown();
         try {
-            if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+            if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) { // 60 seconds seem a safe timeout before terminating the threads
                 executorService.shutdownNow();
             }
         } catch (InterruptedException e) {

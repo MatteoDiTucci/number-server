@@ -13,7 +13,7 @@ public class Timer {
     }
 
     @Scheduled(fixedRate = "${scheduled.fixed-rate}")
-    void everyTenSeconds() {
+    void scheduledReport() {
         report.display();
     }
 }
