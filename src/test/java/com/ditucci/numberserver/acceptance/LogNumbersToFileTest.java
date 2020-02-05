@@ -59,7 +59,6 @@ public class LogNumbersToFileTest {
     }
 
     @Test
-    @Disabled
     void shutsDownOnTerminationCommand(){
         assertThrows(ReadTimeoutException.class,
                 () -> client.logNumbers("terminate\n"));

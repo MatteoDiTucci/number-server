@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.ditucci.numberserver.NumberQueue.POISON_PILL;
+
 @Controller
 public class NumberController {
 
@@ -27,14 +29,11 @@ public class NumberController {
         this.numberQueueConsumers = numberQueueConsumers;
     }
 
-    public NumberController(NumberQueue queue) {
-        this.queue = queue;
-    }
-
     @Post(value = "/numbers", consumes = MediaType.TEXT_PLAIN)
     public HttpResponse<Void> logNumbers(@Body String numberLines) {
 
         if (TERMINATION_COMMAND.equals(numberLines)) {
+            queue.add(POISON_PILL);
             numberQueueConsumers.shutdownGracefully();
             appContext.stop();
             System.exit(0);

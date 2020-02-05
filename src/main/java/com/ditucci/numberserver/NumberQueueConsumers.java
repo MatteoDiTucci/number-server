@@ -6,6 +6,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import static com.ditucci.numberserver.NumberQueue.POISON_PILL;
+
 @Singleton
 public class NumberQueueConsumers {
     private NumberQueue queue;
@@ -25,6 +27,11 @@ public class NumberQueueConsumers {
             while (true) {
                 try {
                     List<String> numbers = queue.blockingGet();
+
+                    if (POISON_PILL == numbers) {
+                        break;
+                    }
+
                     repository.save(numbers);
 
                 } catch (InterruptedException e) {

@@ -7,21 +7,25 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static com.ditucci.numberserver.NumberQueue.POISON_PILL;
 import static io.micronaut.http.HttpStatus.BAD_REQUEST;
 import static io.micronaut.http.HttpStatus.OK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class NumberControllerTest {
 
     private NumberQueue queue;
+    private NumberQueueConsumers queueConsumers;
     private NumberController controller;
 
 
     @BeforeEach
     void setUp() {
         queue = mock(NumberQueue.class);
-        controller = new NumberController(queue);
+        queueConsumers = mock(NumberQueueConsumers.class);
+        controller = new NumberController(queue, queueConsumers);
     }
 
     @Test
@@ -91,5 +95,13 @@ class NumberControllerTest {
         HttpResponse<Void> response = controller.logNumbers(number + "\n");
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatus());
+    }
+
+    @Test
+    void passPoisonPillToQueueConsumersWhenReceivingTerminationCommand() {
+        assertThrows(Exception.class,
+                () -> controller.logNumbers("terminate\n"));
+
+        verify(queue).add(POISON_PILL);
     }
 }

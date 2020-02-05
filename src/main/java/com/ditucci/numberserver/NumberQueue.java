@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 public class NumberQueue {
+    public static List<String> POISON_PILL = List.of();
     private BlockingQueue<List<String>> queue;
 
     public NumberQueue(BlockingQueue<List<String>> queue) {
