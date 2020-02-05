@@ -6,7 +6,8 @@
     * Re-run gradle task 
 
 # How to run
-In the project root folder, run `./gradlew run`
+In the project root folder, run `./gradlew run`  
+The application accepts POST requests to `http://localhost:4000/numbers`
 
 # How to test
 In the project root folder, run `./gradlew test`

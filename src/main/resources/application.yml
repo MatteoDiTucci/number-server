@@ -2,7 +2,7 @@ micronaut:
   application:
     name: numberserver
   server:
-    port: 4040
+    port: 4000
   executors:
     io:
       type:
