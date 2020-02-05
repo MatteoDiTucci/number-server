@@ -19,27 +19,40 @@ public class NumberController {
     @Inject
     private ApplicationContext appContext;
 
-    private NumberRepository repository;
+    private NumberQueue queue;
+    private NumberQueueConsumers numberQueueConsumers;
 
-    public NumberController(NumberRepository repository) {
-        this.repository = repository;
+    public NumberController(NumberQueue queue, NumberQueueConsumers numberQueueConsumers) {
+        this.queue = queue;
+        this.numberQueueConsumers = numberQueueConsumers;
+    }
+
+    public NumberController(NumberQueue queue) {
+        this.queue = queue;
     }
 
     @Post(value = "/numbers", consumes = MediaType.TEXT_PLAIN)
     public HttpResponse<Void> logNumbers(@Body String numberLines) {
 
         if (TERMINATION_COMMAND.equals(numberLines)) {
+            numberQueueConsumers.shutdownGracefully();
             appContext.stop();
+            System.exit(0);
         }
 
         if (isNotValidNumbers(numberLines)) {
             return HttpResponse.badRequest();
         }
 
-        String[] numbers = numberLines.split("\n");
-        repository.save(Arrays.asList(numbers));
+        if (addNumbersToQueue(numberLines)) {
+            return HttpResponse.ok();
+        }
+        return HttpResponse.serverError();
+    }
 
-        return HttpResponse.ok();
+    private boolean addNumbersToQueue(@Body String numberLines) {
+        String[] numbers = numberLines.split("\n");
+        return queue.add(Arrays.asList(numbers));
     }
 
     private boolean isNotValidNumbers(String numberLines) {

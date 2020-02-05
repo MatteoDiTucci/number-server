@@ -1,6 +1,6 @@
 package com.ditucci.numberserver;
 
-import io.micronaut.runtime.Micronaut;
+        import io.micronaut.runtime.Micronaut;
 
 public class Application {
 

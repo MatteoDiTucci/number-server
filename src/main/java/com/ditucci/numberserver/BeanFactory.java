@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Singleton;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Factory
@@ -20,5 +21,10 @@ public class BeanFactory {
     public NumbersReport buildNumbersReport(NumberRepository repository) {
         NumberLogger logger = new NumberLogger(LoggerFactory.getLogger(NumbersReport.class));
         return new NumbersReport(0, 0, repository, logger);
+    }
+
+    @Singleton
+    public NumberQueue buildNumberQueue() {
+        return new NumberQueue(new LinkedBlockingQueue<>());
     }
 }

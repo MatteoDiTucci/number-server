@@ -1,6 +1,7 @@
 package com.ditucci.numberserver;
 
 import io.micronaut.http.HttpResponse;
+import io.micronaut.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,24 +10,26 @@ import java.util.List;
 import static io.micronaut.http.HttpStatus.BAD_REQUEST;
 import static io.micronaut.http.HttpStatus.OK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 class NumberControllerTest {
 
-    private NumberRepository repository;
+    private NumberQueue queue;
     private NumberController controller;
 
 
     @BeforeEach
     void setUp() {
-        repository = mock(NumberRepository.class);
-        controller = new NumberController(repository);
+        queue = mock(NumberQueue.class);
+        controller = new NumberController(queue);
     }
 
     @Test
     void returnsOkFor9DigitNumber() {
-        HttpResponse<Void> response = controller.logNumbers("123456789\n");
+        String number = "123456789";
+        when(queue.add(List.of(number))).thenReturn(true);
+
+        HttpResponse<Void> response = controller.logNumbers(number + "\n");
 
         assertEquals(OK, response.getStatus());
     }
@@ -37,7 +40,7 @@ class NumberControllerTest {
 
         controller.logNumbers(number.concat("\n"));
 
-        verify(repository).save(List.of(number));
+        verify(queue).add(List.of(number));
     }
 
     @Test
@@ -49,7 +52,7 @@ class NumberControllerTest {
 
         controller.logNumbers(numbers);
 
-        verify(repository).save(List.of(firstNumber, secondNumber, thirdNumber));
+        verify(queue).add(List.of(firstNumber, secondNumber, thirdNumber));
     }
 
     @Test
@@ -78,5 +81,15 @@ class NumberControllerTest {
         HttpResponse<Void> response = controller.logNumbers("12345a678\n");
 
         assertEquals(BAD_REQUEST, response.getStatus());
+    }
+
+    @Test
+    void returnsServerErrorWhenQueueDoesNotAcceptItems() {
+        String number = "123456789";
+        when(queue.add(List.of(number))).thenReturn(false);
+
+        HttpResponse<Void> response = controller.logNumbers(number + "\n");
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatus());
     }
 }

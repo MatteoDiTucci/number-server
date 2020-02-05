@@ -5,6 +5,7 @@ import io.micronaut.http.client.exceptions.ReadTimeoutException;
 import io.micronaut.runtime.server.EmbeddedServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -58,6 +59,7 @@ public class LogNumbersToFileTest {
     }
 
     @Test
+    @Disabled
     void shutsDownOnTerminationCommand(){
         assertThrows(ReadTimeoutException.class,
                 () -> client.logNumbers("terminate\n"));
