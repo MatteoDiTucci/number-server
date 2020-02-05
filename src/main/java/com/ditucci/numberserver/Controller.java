@@ -17,6 +17,8 @@ import static com.ditucci.numberserver.Queue.POISON_PILL;
 public class Controller {
 
     private static final String TERMINATION_COMMAND = "terminate\n";
+    private static final Pattern pattern = Pattern.compile("(\\d{9}\\n)+");
+
     @Inject
     private ApplicationContext appContext;
 
@@ -53,7 +55,6 @@ public class Controller {
     }
 
     private boolean isNotValidNumbers(String numberLines) {
-        Pattern pattern = Pattern.compile("(\\d{9}\\n)+");
         Matcher matcher = pattern.matcher(numberLines);
 
         return !matcher.matches();
