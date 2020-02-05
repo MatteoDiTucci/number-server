@@ -35,7 +35,7 @@ public class LogNumbersToFileTest {
     }
 
     @Test
-    void logsNumbersInFile() {
+    void logsNumbersInFile() throws InterruptedException {
         String firstNumber = "123456789";
         String secondNumber = "098765432";
         String thirdNumber = "102938475";
@@ -43,11 +43,12 @@ public class LogNumbersToFileTest {
 
         client.logNumbers(numberLinesFrom(firstNumber, secondNumber, thirdNumber));
 
+        Thread.sleep(150);
         assertEquals(expectedLogContent, contentFromLogFile());
     }
 
     @Test
-    void logsDeduplicatedNumbers() {
+    void logsDeduplicatedNumbers() throws InterruptedException {
         String duplicatedNumber = "123456789";
         String number = "098765432";
 
@@ -55,6 +56,7 @@ public class LogNumbersToFileTest {
         client.logNumbers(number.concat("\n"));
         client.logNumbers(duplicatedNumber.concat("\n"));
 
+        Thread.sleep(150);
         assertEquals(duplicatedNumber + "\n" + number + "\n", contentFromLogFile());
     }
 
