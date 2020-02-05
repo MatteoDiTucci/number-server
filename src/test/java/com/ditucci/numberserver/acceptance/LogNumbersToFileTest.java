@@ -43,7 +43,7 @@ public class LogNumbersToFileTest {
 
         client.logNumbers(numberLinesFrom(firstNumber, secondNumber, thirdNumber));
 
-        Thread.sleep(150);
+        Thread.sleep(150); // explicit wait to guard against flaky tests given bu multi-threaded execution
         assertEquals(expectedLogContent, contentFromLogFile());
     }
 
@@ -56,7 +56,7 @@ public class LogNumbersToFileTest {
         client.logNumbers(number.concat("\n"));
         client.logNumbers(duplicatedNumber.concat("\n"));
 
-        Thread.sleep(150);
+        Thread.sleep(150); // explicit wait to guard against flaky tests given bu multi-threaded execution
         assertEquals(duplicatedNumber + "\n" + number + "\n", contentFromLogFile());
     }
 
