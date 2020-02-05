@@ -7,25 +7,25 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.ditucci.numberserver.NumberQueue.POISON_PILL;
+import static com.ditucci.numberserver.Queue.POISON_PILL;
 import static io.micronaut.http.HttpStatus.BAD_REQUEST;
 import static io.micronaut.http.HttpStatus.OK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-class NumberControllerTest {
+class ControllerTest {
 
-    private NumberQueue queue;
-    private NumberQueueConsumers queueConsumers;
-    private NumberController controller;
+    private Queue queue;
+    private QueueConsumers queueConsumers;
+    private Controller controller;
 
 
     @BeforeEach
     void setUp() {
-        queue = mock(NumberQueue.class);
-        queueConsumers = mock(NumberQueueConsumers.class);
-        controller = new NumberController(queue, queueConsumers);
+        queue = mock(Queue.class);
+        queueConsumers = mock(QueueConsumers.class);
+        controller = new Controller(queue, queueConsumers);
     }
 
     @Test

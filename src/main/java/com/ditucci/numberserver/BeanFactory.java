@@ -12,19 +12,19 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class BeanFactory {
 
     @Singleton
-    public NumberRepository buildNumberRepository() {
-        NumberLogger logger = new NumberLogger(LoggerFactory.getLogger(NumberRepository.class));
-        return new NumberRepository(new AtomicInteger(), ConcurrentHashMap.newKeySet(), logger);
+    public Repository buildRepository() {
+        Logger logger = new Logger(LoggerFactory.getLogger(Repository.class));
+        return new Repository(new AtomicInteger(), ConcurrentHashMap.newKeySet(), logger);
     }
 
     @Singleton
-    public NumbersReport buildNumbersReport(NumberRepository repository) {
-        NumberLogger logger = new NumberLogger(LoggerFactory.getLogger(NumbersReport.class));
-        return new NumbersReport(0, 0, repository, logger);
+    public Report buildReport(Repository repository) {
+        Logger logger = new Logger(LoggerFactory.getLogger(Report.class));
+        return new Report(0, 0, repository, logger);
     }
 
     @Singleton
-    public NumberQueue buildNumberQueue() {
-        return new NumberQueue(new LinkedBlockingQueue<>());
+    public Queue buildQueue() {
+        return new Queue(new LinkedBlockingQueue<>());
     }
 }

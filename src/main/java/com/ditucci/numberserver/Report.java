@@ -1,12 +1,12 @@
 package com.ditucci.numberserver;
 
-public class NumbersReport {
+public class Report {
     private int lastExecutionUniques;
     private int lastExecutionDuplicates;
-    private NumberRepository repository;
-    private NumberLogger logger;
+    private Repository repository;
+    private Logger logger;
 
-    public NumbersReport(int lastExecutionUniques, int lastExecutionDuplicates, NumberRepository repository, NumberLogger logger) {
+    public Report(int lastExecutionUniques, int lastExecutionDuplicates, Repository repository, Logger logger) {
         this.lastExecutionUniques = lastExecutionUniques;
         this.lastExecutionDuplicates = lastExecutionDuplicates;
         this.repository = repository;

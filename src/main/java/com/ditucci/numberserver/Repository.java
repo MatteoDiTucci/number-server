@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class NumberRepository {
+public class Repository {
     private AtomicInteger duplicatesTotal;
     private Set<String> uniques;
-    private NumberLogger logger;
+    private Logger logger;
 
-    public NumberRepository(AtomicInteger duplicatesTotal, Set<String> uniques, NumberLogger logger) {
+    public Repository(AtomicInteger duplicatesTotal, Set<String> uniques, Logger logger) {
         this.duplicatesTotal = duplicatesTotal;
         this.uniques = uniques;
         this.logger = logger;

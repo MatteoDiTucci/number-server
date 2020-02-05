@@ -25,7 +25,7 @@
         <appender-ref ref="FILE" />
     </appender>
 
-    <logger name="com.ditucci.numberserver.NumberRepository" level="INFO" additivity="false">
+    <logger name="com.ditucci.numberserver.Repository" level="INFO" additivity="false">
         <appender-ref ref="ASYNC" />
     </logger>
 </configuration>

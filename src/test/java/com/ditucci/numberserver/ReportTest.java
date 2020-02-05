@@ -7,19 +7,19 @@ import org.mockito.Mockito;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class NumbersReportTest {
+class ReportTest {
 
     private int lastExecutionUniques;
     private int lastExecutionDuplicates;
-    private NumberRepository repository;
-    private NumberLogger logger;
-    private NumbersReport report;
+    private Repository repository;
+    private Logger logger;
+    private Report report;
 
     @BeforeEach
     void setUp() {
-        repository = Mockito.mock(NumberRepository.class);
-        logger = Mockito.mock(NumberLogger.class);
-        report = new NumbersReport(0, 0, repository, logger);
+        repository = Mockito.mock(Repository.class);
+        logger = Mockito.mock(Logger.class);
+        report = new Report(0, 0, repository, logger);
 
         when(repository.uniquesTotal()).thenReturn(10);
         when(repository.duplicatesTotal()).thenReturn(10);
@@ -37,7 +37,7 @@ class NumbersReportTest {
     @Test
     void displaysUniquesDeltaFromLastExecution() {
         lastExecutionUniques = 2;
-        report = new NumbersReport(lastExecutionUniques, lastExecutionDuplicates, repository, logger);
+        report = new Report(lastExecutionUniques, lastExecutionDuplicates, repository, logger);
         int expectedUniquesDelta = 8;
 
         report.display();
@@ -48,7 +48,7 @@ class NumbersReportTest {
     @Test
     void displaysDuplicatesDeltaFromLastExecution() {
         lastExecutionDuplicates = 3;
-        report = new NumbersReport(lastExecutionUniques, lastExecutionDuplicates, repository, logger);
+        report = new Report(lastExecutionUniques, lastExecutionDuplicates, repository, logger);
         int expectedDuplicatesDelta = 7;
 
         report.display();
@@ -58,7 +58,7 @@ class NumbersReportTest {
 
     @Test
     void storeCumulativeLastExecutionsUniquesAndDuplicates() {
-        report = new NumbersReport(lastExecutionUniques, lastExecutionDuplicates, repository, logger);
+        report = new Report(lastExecutionUniques, lastExecutionDuplicates, repository, logger);
 
         report.display();
         report.display();

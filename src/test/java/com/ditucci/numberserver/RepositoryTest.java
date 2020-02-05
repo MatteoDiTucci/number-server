@@ -11,17 +11,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
-class NumberRepositoryTest {
+class RepositoryTest {
 
     private HashSet<String> uniques;
-    private NumberLogger logger;
-    private NumberRepository repository;
+    private Logger logger;
+    private Repository repository;
 
     @BeforeEach
     void setUp() {
         uniques = new HashSet<>();
-        logger = mock(NumberLogger.class);
-        repository = new NumberRepository(new AtomicInteger(), uniques, logger);
+        logger = mock(Logger.class);
+        repository = new Repository(new AtomicInteger(), uniques, logger);
     }
 
     @Test

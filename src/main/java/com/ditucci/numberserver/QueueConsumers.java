@@ -6,15 +6,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import static com.ditucci.numberserver.NumberQueue.POISON_PILL;
+import static com.ditucci.numberserver.Queue.POISON_PILL;
 
 @Singleton
-public class NumberQueueConsumers {
-    private NumberQueue queue;
-    private NumberRepository repository;
+public class QueueConsumers {
+    private Queue queue;
+    private Repository repository;
     private ExecutorService executorService;
 
-    public NumberQueueConsumers(NumberQueue queue, NumberRepository repository) {
+    public QueueConsumers(Queue queue, Repository repository) {
         this.queue = queue;
         this.repository = repository;
         this.executorService = Executors.newFixedThreadPool(10);

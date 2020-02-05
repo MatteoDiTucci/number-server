@@ -10,16 +10,16 @@ import java.util.concurrent.LinkedBlockingQueue;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-class NumberQueueTest {
+class QueueTest {
 
     LinkedBlockingQueue<List<String>> linkedBlockingQueue;
-    private NumberQueue numberQueue;
+    private Queue queue;
 
 
     @BeforeEach
     void setUp() {
         linkedBlockingQueue = Mockito.mock(LinkedBlockingQueue.class);
-        numberQueue = new NumberQueue(linkedBlockingQueue);
+        queue = new Queue(linkedBlockingQueue);
     }
 
     @Test
@@ -27,16 +27,16 @@ class NumberQueueTest {
         List<String> listOfNumbers = List.of("123456789");
         when(linkedBlockingQueue.take()).thenReturn(listOfNumbers);
 
-        assertEquals(listOfNumbers, numberQueue.blockingGet());
+        assertEquals(listOfNumbers, queue.blockingGet());
     }
 
     @Test
     void forwardsInterruptedExceptionFromLinkedBlockingQueue() throws InterruptedException {
         when(linkedBlockingQueue.take()).thenThrow(new InterruptedException());
-        numberQueue = new NumberQueue(linkedBlockingQueue);
+        queue = new Queue(linkedBlockingQueue);
 
         assertThrows(InterruptedException.class,
-                () -> numberQueue.blockingGet());
+                () -> queue.blockingGet());
     }
 
     @Test
@@ -44,7 +44,7 @@ class NumberQueueTest {
         List<String> listOfNumbers = List.of("123456789");
         when(linkedBlockingQueue.add(listOfNumbers)).thenReturn(true);
 
-        assertTrue(numberQueue.add(listOfNumbers));
+        assertTrue(queue.add(listOfNumbers));
     }
 
     @Test
@@ -52,6 +52,6 @@ class NumberQueueTest {
         List<String> listOfNumbers = List.of("123456789");
         when(linkedBlockingQueue.add(listOfNumbers)).thenThrow(new IllegalStateException());
 
-        assertFalse(numberQueue.add(listOfNumbers));
+        assertFalse(queue.add(listOfNumbers));
     }
 }

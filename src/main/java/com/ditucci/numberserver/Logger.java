@@ -1,14 +1,12 @@
 package com.ditucci.numberserver;
 
-import org.slf4j.Logger;
-
 import javax.inject.Singleton;
 
 @Singleton
-public class NumberLogger {
-    private Logger logger;
+public class Logger {
+    private org.slf4j.Logger logger;
 
-    public NumberLogger(Logger logger) {
+    public Logger(org.slf4j.Logger logger) {
         this.logger = logger;
     }
 

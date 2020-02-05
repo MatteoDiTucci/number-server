@@ -4,7 +4,6 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Body;
-import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Post;
 
 import javax.inject.Inject;
@@ -12,21 +11,21 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.ditucci.numberserver.NumberQueue.POISON_PILL;
+import static com.ditucci.numberserver.Queue.POISON_PILL;
 
-@Controller
-public class NumberController {
+@io.micronaut.http.annotation.Controller
+public class Controller {
 
     private static final String TERMINATION_COMMAND = "terminate\n";
     @Inject
     private ApplicationContext appContext;
 
-    private NumberQueue queue;
-    private NumberQueueConsumers numberQueueConsumers;
+    private Queue queue;
+    private QueueConsumers queueConsumers;
 
-    public NumberController(NumberQueue queue, NumberQueueConsumers numberQueueConsumers) {
+    public Controller(Queue queue, QueueConsumers queueConsumers) {
         this.queue = queue;
-        this.numberQueueConsumers = numberQueueConsumers;
+        this.queueConsumers = queueConsumers;
     }
 
     @Post(value = "/numbers", consumes = MediaType.TEXT_PLAIN)
@@ -34,7 +33,7 @@ public class NumberController {
 
         if (TERMINATION_COMMAND.equals(numberLines)) {
             queue.add(POISON_PILL);
-            numberQueueConsumers.shutdownGracefully();
+            queueConsumers.shutdownGracefully();
             appContext.stop();
         }
 

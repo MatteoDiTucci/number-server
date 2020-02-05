@@ -6,14 +6,14 @@ import javax.inject.Singleton;
 
 @Singleton
 public class Timer {
-    private NumbersReport numbersReport;
+    private Report report;
 
-    public Timer(NumbersReport numbersReport) {
-        this.numbersReport = numbersReport;
+    public Timer(Report report) {
+        this.report = report;
     }
 
     @Scheduled(fixedRate = "${scheduled.fixed-rate}")
     void everyTenSeconds() {
-        numbersReport.display();
+        report.display();
     }
 }
