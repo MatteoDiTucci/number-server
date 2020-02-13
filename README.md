@@ -7,7 +7,12 @@
 
 # How to run
 In the project root folder, run `./gradlew run`  
-The application accepts POST requests to `http://localhost:4000/numbers`
+The application accepts POST requests to `http://localhost:4000/numbers` with body containing any 9 digits numbers terminated by a new line, for instance: 
+```
+123456789
+098765432    
+
+```
 
 # How to test
 In the project root folder, run `./gradlew test`
