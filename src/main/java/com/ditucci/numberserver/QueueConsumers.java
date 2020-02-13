@@ -29,6 +29,7 @@ public class QueueConsumers {
                     List<String> numbers = queue.blockingGet();
 
                     if (POISON_PILL == numbers) {
+                        queue.add(POISON_PILL);
                         break;
                     }
 
