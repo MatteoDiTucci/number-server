@@ -1,3 +1,11 @@
+# Description
+Web Application to log collections of 9 digits numbers.  
+Constraints:
+- Only 9 digits numbers are valid
+- Numbers collections need to terminate with a new line character (`\n`)
+- Max 5 clients simultaneously logging numbers
+- Only log unique numbers, filtering out numbers that have already been logged
+
 # Setup
 * Java 11
 * If you running the project in IntelliJ and Gradle gives problems:   
@@ -5,12 +13,20 @@
     * Gradle JVM: change to version 1.11
     * Re-run gradle task 
 
-# How to run
+# How to run locally
 In the project root folder, run `./gradlew run`  
-The application accepts POST requests to `http://localhost:4000/numbers` with body containing any 9 digits numbers terminated by a new line, for instance: 
+The application accepts POST requests to `http://localhost:4000/numbers` with body containing any 9 digits numbers terminated by a new line character (`\n`), for instance: 
 ```
 123456789
 098765432    
+
+```
+
+Numbers will be logged into the file `numbers.log`
+
+To shutdown the app send a POST request with the following body:
+```
+terminate  
 
 ```
 
@@ -18,17 +34,17 @@ The application accepts POST requests to `http://localhost:4000/numbers` with bo
 In the project root folder, run `./gradlew test`
 
 # Assumptions
-* Clients can receive a http response with status 200 if their request has been persisted on the application queue, but not logged yet.  
-If this is a wrong assumption, then the solution would have been synchronous (no queue and no Logback async appender)
+* Clients receives a http response with status 200 if their request has been added to the application queue, but not logged yet  
 * Runtime exception are not cleanly handled to return a 5XX to clients
 * Numbers are treated as `String` and not wrapped into a domain entity to keep the design simple and to improve performance avoiding conversions from and to `String`
 * No data replication (e.g. multiple log files) is needed
 * Logback can log any string of arbitrary length
 * 60 seconds as a reasonable amount of time for the queue consumers to finish their tasks when shutdown is triggered
 * Logback shutdowns gracefully by [default](http://logback.qos.ch/manual/configuration.html#shutdownHook)
+* If just one number is malformed within the whole collection, the client will receive a BAD REQUEST (400)
 
 
-# How the solution was implemented
+# How the application was implemented
 I started implementing all the functional requirements assuming single-threaded execution and no optimisation for throughput.
 
 Then, I introduced concurrency safety mechanisms:
@@ -49,10 +65,6 @@ The bottlenecks encountered were:
 At the time of writing, the bottleneck for the client response time is the regex that validates the numbers format.
 The bottleneck for the threads consuming the queue is the `ConcurrentHashSet` (`ConcurrentHashMap`) insertion
 
-# Tech stack justification
-* Micronaut as a Java web framework was picked because it is lightweight, easy to test and has exhaustive documentation
-* Logback as logging library was picked because it is a proved robust tool for (async) logging
-
 # Limits
 * The application can hold up to Java `Integer.MAX_VALUE` unique numbers because `ConcurrentHashSet` (`ConcurrentHashMap`) is based on an array whose max length is `Integer.MAX_VALUE`
 * The application can hold up to Java `Integer.MAX_VALUE` duplicates because `AtomicInteger` upper bound is `Integer.MAX_VALUE`
@@ -62,6 +74,9 @@ The bottleneck for the threads consuming the queue is the `ConcurrentHashSet` (`
 * The report that prints in console is not covered by an acceptance test.  
 The idea would have been to swap `stdout` with a `new PrintStream(new ByteArrayOutputStream())` during the setup of the test and then restore `stdout` at the end of the test.  
 I did not consider this critical so I left it out for the sake of time
-* Number format validation would be better tested using property based testing. I left this out for the sake of time
-
+* Number format validation would be better tested using property based testing.  
+I left this out for the sake of time
+* The `QueueConsumers` logic is not tested.  
+This could have been done extracting that logic in another class and unit testing it.  
+This would also have led to a better separation of concerns, leaving the `QueueConsumers` just in charge of thread spawning and shutting down.  I left it out for the sake of time
  
