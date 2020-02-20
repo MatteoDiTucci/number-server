@@ -5,6 +5,10 @@ Constraints:
 - Numbers collections need to terminate with a new line character (`\n`)
 - Max 5 clients simultaneously logging numbers
 - Only log unique numbers, filtering out numbers that have already been logged
+- Every 10 seconds, write in console:
+    - how many unique numbers was received in the last 10 seconds
+    - how many duplicate numbers was received in the last 10 seconds
+    - how many unique numbers have been received from application startup
 
 # Setup
 * Java 11
